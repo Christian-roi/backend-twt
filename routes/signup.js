@@ -19,6 +19,7 @@ router.post("/signup", authLoginUserMiddleware, async (req, res) => {
     try {
         const { username, email, password, confirm } = await userSchema.validateAsync(req.body);
 
+
         if(password !== confirm){
             return res.status(412).send({
                 errorMessages: "Password does not match",
@@ -43,16 +44,14 @@ router.post("/signup", authLoginUserMiddleware, async (req, res) => {
             });
         }
 
-        const user = await User.findOne({
-            attributes: ["userId"],
-            where: {
-                username,
-            },
-        });
+        const user = await User.findOne({ "email": email });
 
-        if (user.length){
+    //    If email already exists, return error
+        // console.log(email);
+        // console.log(user.email);
+        if(user){
             return res.status(412).send({
-                errorMessages: "Username or email already exists",
+                errorMessages: "Email already exists",
             });
         }
 
