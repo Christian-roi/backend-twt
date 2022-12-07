@@ -62,7 +62,7 @@ router.post("/signup", authLoginUserMiddleware, async (req, res) => {
         });
 
     } catch (err) {
-        console.trace(err);
+        // console.trace(err);
         console.log(`${req.method} ${req.originalUrl} ${err}`);
 
         return res.status(400).send({

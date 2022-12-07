@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const login = require("./routes/login");
 const signup = require("./routes/signup");
+const logout = require('./routes/logout')
 const connect = require("./models/index");
 
 connect();
@@ -16,9 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use("/api", [login, signup]);
-
-
+app.use("/api", [login, signup, logout]);
 
 server.listen(port, () => {
     console.log(`Server running at port ${port}`);
