@@ -15,7 +15,7 @@ const userSchema = Joi.object({
     confirm: Joi.string(),
 });
 
-router.post("/signup", authLoginUserMiddleware, async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const { username, email, password, confirm } = await userSchema.validateAsync(req.body);
 
