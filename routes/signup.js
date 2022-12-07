@@ -9,6 +9,7 @@ const re_username = /^[a-zA-Z0-9]{3,10}$/;
 const re_password = /^[a-zA-Z0-9]{4,30}$/;
 
 const userSchema = Joi.object({
+    name: Joi.string(),
     username: Joi.string().pattern(re_username).required(),
     email: Joi.string().email().required(),
     password: Joi.string().pattern(re_password).required(),
@@ -17,7 +18,7 @@ const userSchema = Joi.object({
 
 router.post("/signup", async (req, res) => {
     try {
-        const { username, email, password, confirm } = await userSchema.validateAsync(req.body);
+        const { name, username, email, password, confirm } = await userSchema.validateAsync(req.body);
 
 
         if(password !== confirm){
@@ -55,7 +56,7 @@ router.post("/signup", async (req, res) => {
             });
         }
 
-        const newUser = await User.create({ username, email, password , userId: 0});
+        const newUser = await User.create({ name ,username, email, password , userId: 0});
 
         return res.status(200).send({ 
             message: "User created successfully",

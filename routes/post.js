@@ -10,16 +10,29 @@ const date = require('date-and-time')
 
 //TIMELINE
 router.get("/timeline" , async (req,res) => {
-    const timeline = await Posts.find();
+    const timeline = await Posts.aggregate([
+        {
+            $lookup:
+            {
+                from: "likes",
+                localField: "postId",
+                foreignField: "postId",
+                as: "likes"
+            }
+        }
+      ]).exec();
     // const datauser = await Users.find();;;
     // const userMap = datauser.reduce((map, user) => map.set(user.userId, user.username), new Map());
+    // console.log(timeline)
     const posts = timeline.map(post => {
         // const name  = userMap.get(post.userId);
         return {
+            id: post.postId,
             title: post.title,
             content: post.content,
             username: post.userName,
             datetime: date.format(post.createdAt, 'DD/MM/YYYY HH:mm:ss'),
+            likes: post.likes.length
         }
     })
     res.send(posts)
