@@ -3,6 +3,7 @@ const app = express();
 const login = require("./routes/login");
 const signup = require("./routes/signup");
 const logout = require('./routes/logout')
+const comment = require('./routes/comment')
 const connect = require("./models/index");
 
 connect();
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use("/api", [login, signup, logout]);
+app.use("/api", [login, signup, logout, comment]);
 
 server.listen(port, () => {
     console.log(`Server running at port ${port}`);
