@@ -10,7 +10,13 @@ const date = require('date-and-time')
 
 //TIMELINE
 router.get("/timeline" , async (req,res) => {
+    // const sort = { postId: -1}
     const timeline = await Posts.aggregate([
+        {
+            $sort : {
+                postId: -1
+            }
+        }, 
         {
             $lookup:
             {
@@ -28,7 +34,7 @@ router.get("/timeline" , async (req,res) => {
             title: post.title,
             content: post.content,
             username: post.userName,
-            datetime: date.format(post.createdAt, 'DD/MM/YYYY HH:mm:ss'),
+            datetime: date.format(post.createdAt, 'MMM DD '),
             likes: post.likes.length
         }
     })
@@ -36,7 +42,7 @@ router.get("/timeline" , async (req,res) => {
 });
 
 //post tweet
-router.post("/posts", authMiddleware, async(req, res)=> {
+router.post("/posts", async(req, res)=> {
     try{      
         // const userIdLogin = res.locals.user.userId
         // const userName = res.locals.user.username
@@ -68,11 +74,11 @@ router.get("/timeline/:Id", async(req,res) => {
     const dataPosts =  await Posts.find({postId:Id})
     const getById = dataPosts.map(data => {
         return{
-            postId: post.postId,
+            postId: data.postId,
             title: data.title,
             content: data.content,
             username: data.userName,
-            datetime: date.format(data.createdAt, 'DD/MM/YYYY HH:mm:ss'),
+            datetime: date.format(data.createdAt, 'MMM DD '),
         };
     });
     res.json(getById)
@@ -87,7 +93,7 @@ router.get("/timeline/user/:user", async(req, res) => {
             title: data.title,
             content: data.content,
             username: data.userName,
-            datetime: date.format(data.createdAt, 'DD/MM/YYYY HH:mm:ss'),
+            datetime: date.format(data.createdAt, 'MMM DD '),
         };
     });
     res.json(getByuser)
