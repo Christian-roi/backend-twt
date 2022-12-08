@@ -9,10 +9,10 @@ const postSchema = new Schema({
         required: true,
         unique:true
     },
-    title:{
-        type:String,
-        required: true,
-    },
+    // title:{
+    //     type:String,
+    //     required: true,
+    // },
     content:{
         type:String,
         required: true,
@@ -28,7 +28,11 @@ const postSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Like'
+    }]
 });
 
 postSchema.plugin(autoIncrement, { inc_field:'postId'});
