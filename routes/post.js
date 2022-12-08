@@ -21,13 +21,10 @@ router.get("/timeline" , async (req,res) => {
             }
         }
       ]).exec();
-    // const datauser = await Users.find();;;
-    // const userMap = datauser.reduce((map, user) => map.set(user.userId, user.username), new Map());
-    // console.log(timeline)
     const posts = timeline.map(post => {
         // const name  = userMap.get(post.userId);
         return {
-            id: post.postId,
+            postId: post.postId,
             title: post.title,
             content: post.content,
             username: post.userName,
@@ -41,21 +38,21 @@ router.get("/timeline" , async (req,res) => {
 //post tweet
 router.post("/posts", authMiddleware, async(req, res)=> {
     try{      
-        const userIdLogin = res.locals.user.userId
-        const userName = res.locals.user.username
+        // const userIdLogin = res.locals.user.userId
+        // const userName = res.locals.user.username
         const postData = new Posts({
             postId:0,
-            title:req.body.title,
+            // title:req.body.title,
             content:req.body.content,
-            userId:userIdLogin,
-            username:userName,
+            // userId:userIdLogin,
+            // username:userName,
         });
         const createPost = await Posts.create({
             postId:postData.postId,
-            title: postData.title,
+            // title: postData.title,
             content: postData.content,
-            userId:postData.userId,
-            userName:userName
+            // userId:postData.userId,
+            // userName:userName
         });
         return res.status(200).send({ 
             message: "Post created successfully”"
@@ -71,6 +68,7 @@ router.get("/timeline/:Id", async(req,res) => {
     const dataPosts =  await Posts.find({postId:Id})
     const getById = dataPosts.map(data => {
         return{
+            postId: post.postId,
             title: data.title,
             content: data.content,
             username: data.userName,
